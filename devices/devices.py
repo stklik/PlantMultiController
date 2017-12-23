@@ -145,7 +145,7 @@ def detect_i2c_devices():
               except: # exception if read_byte fails
                  pass
         return addresses
-    except ModuleNotFoundError:
+    except ImportError:
         logger.error("Couldn't load smbus module. Cannot identify I2C devices.")
         return []
 
