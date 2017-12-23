@@ -4,11 +4,11 @@ MAINTAINER "Stefan Klikovits" <stefan@klikovits.net>
 
 # install git
 RUN apt-get update -y && \
-    apt-get install -y git
+    apt-get install -y git python3
 
 # get PMC from github
-RUN git clone https://github.com/stklik/PMC.git
-WORKDIR /PMC
+RUN git clone https://github.com/stklik/PlantMultiController.git
+WORKDIR /PlantMultiController
 
 # install dependencies
 RUN pip3 install -r requirements.txt

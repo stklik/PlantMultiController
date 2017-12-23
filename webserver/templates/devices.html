@@ -98,15 +98,19 @@
     <table class="table table-sm table-bordered table-striped table-hover">
       <thead class="thead-light">
         <tr>
-          <th scope="col" class="col-sm-auto col-md-auto col-lg-auto col-xl-auto">Address</th>
-          <th scope="col" class="col-sm-auto col-md-auto col-lg-auto col-xl-auto">Name</th>
+          <th scope="col" class="col-sm-auto col-md-auto col-lg-auto col-xl-auto">DeviceType</th>
+          <th scope="col" class="col-sm-auto col-md-auto col-lg-auto col-xl-auto">ID</th>
+          <th scope="col" class="col-sm-auto col-md-auto col-lg-auto col-xl-auto">Logical Name</th>
           <th scope="col" class="col-sm-auto col-md-auto col-lg-auto col-xl-auto">Renaming</th>
+          <th scope="col" class="col-sm-auto col-md-auto col-lg-auto col-xl-auto">Current Value</th>
+          <th scope="col" class="col-sm-auto col-md-auto col-lg-auto col-xl-auto">Data Collection</th>
           <th scope="col" class="col-sm-auto col-md-auto col-lg-auto col-xl-auto">Calibration<th>
         </tr>
       </thead>
       <tbody class=" table-hover">
       {% for chirp in chirps %}
       <tr>
+        <td>Chirp</td>
         <td>{{ chirp["address"] }}</td>
         <td>{{ chirp["name"] }}</td>
         <td>
@@ -118,6 +122,8 @@
             </div>
           </form>
         </td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
         <td>
           <form class="form-inline" action="./calibrate-chirp/{{chirp["address"]}}">
             <div class="form-group">
@@ -132,6 +138,30 @@
           </form>
         <td>
       </tr>
+      {% for function in chirp["functions"] %}
+      <tr>
+        <td>&nbsp;</td>
+        <td>{{function["funcId"]}}</td>
+        <td>{{function["logical-name"]}}</td>
+        <td>
+          <form class="form-inline" action="./rename-chirp-function/{{chirp["address"]}}/{{function["funcId"]}}">
+            <div class="form-group">
+            <input class="form-control form-control-sm" placeholder="New Name" name="newname" size="10" required/>
+            <button type="submit" class="btn btn-outline-secondary btn-sm">Rename</button>
+            </div>
+          </form>
+        </td>
+        <td>{{ function["value"] }}</td>
+        <td>
+          {% if function["data-collection"] %}
+            <a  type="button" class="btn btn-outline-primary btn-sm" href="./chirp-collect-data/{{chirp["address"]}}/{{function["funcId"]}}/OFF">Turn OFF</a>
+          {% else %}
+            <a  type="button" class="btn btn-outline-primary btn-sm" href="./chirp-collect-data/{{chirp["address"]}}/{{function["funcId"]}}/ON">Turn ON</a>
+          {% endif %}
+        </td>
+        <td>&nbsp;</td><td>&nbsp;</td>
+      </tr>
+      {% endfor %}
       {% endfor %}
     </tbody>
     </table>

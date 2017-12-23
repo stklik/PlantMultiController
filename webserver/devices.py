@@ -67,6 +67,22 @@ def rename_chirp(identifier):
         flash(error)
     return redirect(url_for('devices.list_devices'))
 
+@devices_blueprint.route('/rename-chirp-function/<identifier>/<function>')
+def rename_chirp_function(identifier, function):
+    newname = request.values.get('newname')
+    error = devices.chirp_set_logical_name_sensor(identifier, function, newname.strip())
+    if error:
+        flash(error)
+    return redirect(url_for('devices.list_devices'))
+
+@devices_blueprint.route('/chirp-collect-data/<module>/<function>/<on_off>')
+def chirp_data_collect(module, function, on_off):
+    error = devices.chirp_set_data_collection(module, function, on_off)
+    if error:
+        flash(error)
+    return redirect(url_for('devices.list_devices'))
+
+
 @devices_blueprint.route('/calibrate-chirp/<identifier>')
 def calibrate_chirp(identifier):
     minimum = request.values.get('min')
