@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>{{hostname}} - Devices</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+  </head>
+  <body>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      {% for message in messages %}
+      <div class="alert alert-danger" role="alert">{{message}}</div>
+      {% endfor %}
+    {% endif %}
+    {% endwith %}
+    <h1>{{hostname}} - Devices</h1>
+
+    <h2>Yocto Devices</h2>
+    <table class="table table-sm table-bordered table-striped table-hover">
+      <thead class="thead-light">
+        <tr>
+          <th scope="col" class="col-sm-auto col-md-auto col-lg-auto col-xl-auto">DeviceType</th>
+          <th scope="col" class="col-sm-auto col-md-auto col-lg-auto col-xl-auto">ID</th>
+          <th scope="col" class="col-sm-auto col-md-auto col-lg-auto col-xl-auto">Logical Name</th>
+          <th scope="col" class="col-sm-auto col-md-auto col-lg-auto col-xl-auto">Renaming</th>
+          <th scope="col" class="col-sm-auto col-md-auto col-lg-auto col-xl-auto">Current Value</th>
+          <th scope="col" class="col-sm-auto col-md-auto col-lg-auto col-xl-auto">Data collection</th>
+          <th scope="col" class="col-sm-auto col-md-auto col-lg-auto col-xl-auto">Activate</th>
+          <th scope="col" class="col-sm-auto col-md-auto col-lg-auto col-xl-auto">Temporary Activate</th>
+        </tr>
+      </thead>
+      <tbody class=" table-hover">
+      {% for yocto in yoctos %}
+      <tr>
+        <td>{{yocto["type"]}}</td>
+        <td>{{yocto["serial"]}}</td>
+        <td>{{yocto["logical-name"]}}</td>
+        <td>
+          <form class="form-inline" action="./rename-yocto/{{yocto["serial"]}}">
+            <div class="form-group">
+            <input class="form-control form-control-sm" placeholder="New Name" name="newname" size="10" required/>
+            <button type="submit" class="btn btn-outline-secondary btn-sm">Rename</button>
+            </div>
+          </form>
+        </td>
+        <td>
+          <a type="button" class="btn btn-outline-primary btn-sm" href="./identify-yocto/{{yocto["serial"]}}">Identify!</a>
+        <td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+      {% for function in yocto["functions"] %}
+      <tr>
+        <td></td>
+        <td>{{function["funcId"]}}</td>
+        <td>{{function["logical-name"]}}</td>
+        <td>
+          <form class="form-inline" action="./rename-yocto-function/{{yocto["serial"]}}/{{function["funcId"]}}">
+            <div class="form-group">
+            <input class="form-control form-control-sm" placeholder="New Name" name="newname" size="10" required/>
+            <button type="submit" class="btn btn-outline-secondary btn-sm">Rename</button>
+            </div>
+          </form>
+        </td>
+        <td>{{ function["value"] }}</td>
+        <td>
+          {% if function["data-collection"] %}
+            <a  type="button" class="btn btn-outline-primary btn-sm" href="./collect-data/{{yocto["serial"]}}/{{function["funcId"]}}/OFF">Turn OFF</a>
+          {% else %}
+            <a  type="button" class="btn btn-outline-primary btn-sm" href="./collect-data/{{yocto["serial"]}}/{{function["funcId"]}}/ON">Turn ON</a>
+          {% endif %}
+        </td>
+        {% if "relay" in function["funcId"] %}
+        <td>
+          <a type="button" class="btn btn-outline-primary btn-sm" href="./toggle-relay/{{yocto["serial"]}}/{{function["funcId"]}}">Flick</a>
+        </td>
+        <td>
+          <form class="form-inline" action="./temporary-activate-relay/{{yocto["serial"]}}/{{function["funcId"]}}">
+            <div class="form-group">
+            <input type="time" min="0:00:05" max="12:00" step="5" class="form-control form-control-sm" placeholder="duration (secs)" name="duration" required/>
+            <button type="submit" class="btn btn-outline-secondary btn-sm">Activate</button>
+            </div>
+          </form>
+        </td>
+        {% else %}
+        <td>&nbsp;</td><td>&nbsp;</td>
+        {% endif %}
+      </tr>
+      {% endfor %}
+      {% endfor %}
+    </tbody>
+    </table>
+
+    <h2>Chirp Devices</h2>
+    <table class="table table-sm table-bordered table-striped table-hover">
+      <thead class="thead-light">
+        <tr>
+          <th scope="col" class="col-sm-auto col-md-auto col-lg-auto col-xl-auto">Address</th>
+          <th scope="col" class="col-sm-auto col-md-auto col-lg-auto col-xl-auto">Name</th>
+          <th scope="col" class="col-sm-auto col-md-auto col-lg-auto col-xl-auto">Renaming</th>
+          <th scope="col" class="col-sm-auto col-md-auto col-lg-auto col-xl-auto">Calibration<th>
+        </tr>
+      </thead>
+      <tbody class=" table-hover">
+      {% for chirp in chirps %}
+      <tr>
+        <td>{{ chirp["address"] }}</td>
+        <td>{{ chirp["name"] }}</td>
+        <td>
+          <form class="form-inline" action="./rename-chirp/{{chirp["address"]}}">
+            <div class="form-group">
+            <input class="form-control form-control-sm" placeholder="New Name"
+              name="newname" required/>
+            <button type="submit" class="btn btn-outline-secondary btn-sm">Rename</button>
+            </div>
+          </form>
+        </td>
+        <td>
+          <form class="form-inline" action="./calibrate-chirp/{{chirp["address"]}}">
+            <div class="form-group">
+              <input class="form-control form-control-sm"
+                  placeholder="min (current: {{ chirp["calibration-min"] }})"
+                  name="min" value="{{ chirp["calibration-min"] }}" size="15" maxlength="3"/>
+              <input class="form-control form-control-sm"
+                  placeholder="max (current: {{ chirp["calibration-max"] }})"
+                  name="max" value="{{ chirp["calibration-max"] }}" size="15" maxlength="3"/>
+              <button type="submit" class="btn btn-outline-primary btn-sm">Calibrate</button>
+            </div>
+          </form>
+        <td>
+      </tr>
+      {% endfor %}
+    </tbody>
+    </table>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+  </body>
+
+
+
+</html>

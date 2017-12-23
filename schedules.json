@@ -1,0 +1,18 @@
+[
+    {
+        "url": "/devices/temporary-activate-relay/Relay/relay1",
+        "params": {
+            "duration": "10:00:00"
+        },
+        "time": "08:00",
+        "recurring": true
+    },
+    {
+        "url": "/devices/temporary-activate-relay/Relay/relay5",
+        "params": {
+            "duration": "10:00:00"
+        },
+        "time": "08:00",
+        "recurring": true
+    }
+]

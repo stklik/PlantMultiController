@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>{{hostname}} - Scheduler</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous">
+
+  </head>
+  <body>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      {% for message in messages %}
+      <div class="alert alert-danger" role="alert">{{message}}</div>
+      {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+
+
+
+    <table class="table table-sm table-bordered table-striped table-hover">
+      <thead class="thead-light">
+        <tr class="thead-light">
+          <th scope="col" class="col-sm-auto col-md-auto col-lg-auto col-xl-auto"></th>
+          <th scope="col" class="col-sm-auto col-md-auto col-lg-auto col-xl-auto">URL</th>
+          <th scope="col" class="col-sm-auto col-md-auto col-lg-auto col-xl-auto">Params</th>
+          <th scope="col" class="col-sm-auto col-md-auto col-lg-auto col-xl-auto">Time</th>
+          <th scope="col" class="col-sm-auto col-md-auto col-lg-auto col-xl-auto">Recurring</th>
+        </tr>
+      </thead>
+      <tbody class=" table-hover">
+        <tr>
+          <form class="form-inline" action="./add" method="POST">
+            <td>
+              <button type="submit" class="btn btn-outline-secondary btn-sm">Add</button>
+            </td>
+            <td>
+              <div class="input-group">
+                <span class="input-group-addon" id="basic-addon3">http://&lt;localhost&gt;:&lt;port&gt;/</span>
+                <input type="text" class="form-control" id="basic-url"
+                  name="url"
+                  size="30" aria-describedby="basic-addon3"
+                  list="urls" required />
+                <datalist id=urls>
+                 <option value="/devices/temporary-activate-relay/<module>/<function>"></option>
+                 <option value="/devices/toggle-relay/<module>/<function>"></option>
+                </datalist>
+              </div>
+            </td>
+            <td>
+              <div class="input-group">
+                <span class="input-group-addon" id="basic-addon2">Post parameters</span>
+                <input type="text" class="form-control" id="basic-url" size="30"
+                name="parameters"
+                aria-describedby="basic-addon2" placeholder="key1=value1;key2=value2; ..." />
+              </div>
+            </td>
+            <td>
+              <div class="form-group">
+                <span class="input-group-addon">What time?</span>
+                <input type="time" min="0:00" max="" class="form-control form-control-sm" placeholder="time" name="time" required/>
+              </div>
+            </td>
+            <td>
+              <div class="form-check">
+                <label class="form-check-label">
+                  <input class="form-check-input" type="checkbox" value="" name="recurring">
+                </label>
+              </div>
+            </td>
+          </form>
+
+        </tr>
+        <tr class="thead-light">
+          <th scope="col" class="col-sm-auto col-md-auto col-lg-auto col-xl-auto"></th>
+          <th scope="col" class="col-sm-auto col-md-auto col-lg-auto col-xl-auto">URL</th>
+          <th scope="col" class="col-sm-auto col-md-auto col-lg-auto col-xl-auto">Params</th>
+          <th scope="col" class="col-sm-auto col-md-auto col-lg-auto col-xl-auto">Time</th>
+          <th scope="col" class="col-sm-auto col-md-auto col-lg-auto col-xl-auto">Recurring</th>
+        </tr>
+        {% for schedule in schedules %}
+        <tr>
+          <td>
+            <a href="./delete/{{loop.index0}}"><i class="fa fa-trash-o fa-3x" aria-hidden="true"></i></a>
+          </td>
+          <td>{{schedule["url"]}}</td>
+          <td>
+            <ul>
+            {% for key, value in schedule["params"].items() %}
+              <li>{{key}} = {{value}}</li>
+            {% endfor %}
+            </ul>
+          </td>
+          <td>
+            {{ schedule["time"] }}
+          </td>
+          <td>
+            {% if schedule["recurring"]%}
+              <i class="fa fa-check-square-o fa-2x" aria-hidden="true"></i>
+            {% else %}
+              <i class="fa fa-square-o fa-2x" aria-hidden="true"></i>
+            {% endif %}
+          </td>
+        </tr>
+
+        {% endfor %}
+      </tbody>
+      </table>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+  </body>
+</html>
