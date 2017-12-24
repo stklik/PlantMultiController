@@ -1,3 +1,0 @@
-[submodule "lib/chirp"]
-	path = lib/chirp
-	url = https://github.com/ageir/chirp-rpi
