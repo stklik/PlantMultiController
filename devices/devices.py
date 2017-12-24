@@ -42,7 +42,7 @@ def _init_yocto_api():
 def get_chirp_interface(chirp_config):
     from lib.chirp.chirp import Chirp
     return Chirp(
-            address=chirp_config["address"],
+            address=int(chirp_config["address"], 16),
             read_moist=True,
             read_temp=True,
             read_light=False,
@@ -57,7 +57,7 @@ def detect_chirp_devices():
     with cfg_ctx() as config:
         chirps = []
         for chirp_address in chirp_addresses:
-            hex_addr = str(hex(chirp_address))
+            hex_addr = str(chirp_address)
             if hex_addr in config and config[hex_addr]['type'] == "chirp":
                 temp_collect = "temperature" in config[hex_addr] and \
                                 config[hex_addr]["temperature"].upper() == "TRUE"

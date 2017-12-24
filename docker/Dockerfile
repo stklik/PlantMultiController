@@ -6,11 +6,12 @@ MAINTAINER "Stefan Klikovits" <stefan@klikovits.net>
 RUN apt-get update -y && \
     apt-get install -y \
         git \
+        apt-utils \
         libusb-1.0-0 \
         python3 \
         python3-pip \
         python3-setuptools \
-        python-smbus
+        python3-smbus
 
 # get PMC from github
 RUN git clone https://github.com/stklik/PlantMultiController.git
