@@ -58,7 +58,7 @@ def detect_chirp_devices():
         chirps = []
         for chirp_address in chirp_addresses:
             hex_addr = str(chirp_address)
-            if hex_addr in config and config[hex_addr]['type'] == "chirp":
+            if hex_addr in config:
                 temp_collect = "temperature" in config[hex_addr] and \
                                 config[hex_addr]["temperature"].upper() == "TRUE"
                 temp_logicalName = config[hex_addr]["temperature_logical-name"] if "temperature_logical-name" in config[hex_addr] else ""
