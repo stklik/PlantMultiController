@@ -68,9 +68,9 @@
         <td>{{ function["value"] }}</td>
         <td>
           {% if function["data-collection"] %}
-            <a  type="button" class="btn btn-outline-primary btn-sm" href="./collect-data/{{yocto["serial"]}}/{{function["funcId"]}}/OFF">Turn OFF</a>
+            <a  type="button" class="btn btn-outline-primary btn-sm disabled" href="./collect-data/{{yocto["serial"]}}/{{function["funcId"]}}/OFF">Turn OFF</a>
           {% else %}
-            <a  type="button" class="btn btn-outline-primary btn-sm" href="./collect-data/{{yocto["serial"]}}/{{function["funcId"]}}/ON">Turn ON</a>
+            <a  type="button" class="btn btn-outline-primary btn-sm disabled" href="./collect-data/{{yocto["serial"]}}/{{function["funcId"]}}/ON">Turn ON</a>
           {% endif %}
         </td>
         {% if "relay" in function["funcId"] %}
@@ -154,9 +154,9 @@
         <td>{{ function["value"] }}</td>
         <td>
           {% if function["data-collection"] %}
-            <a  type="button" class="btn btn-outline-primary btn-sm" href="./chirp-collect-data/{{chirp["address"]}}/{{function["funcId"]}}/OFF">Turn OFF</a>
+            <a  type="button" class="btn btn-outline-primary btn-sm disabled" href="./chirp-collect-data/{{chirp["address"]}}/{{function["funcId"]}}/OFF">Turn OFF</a>
           {% else %}
-            <a  type="button" class="btn btn-outline-primary btn-sm" href="./chirp-collect-data/{{chirp["address"]}}/{{function["funcId"]}}/ON">Turn ON</a>
+            <a  type="button" class="btn btn-outline-primary btn-sm disabled" href="./chirp-collect-data/{{chirp["address"]}}/{{function["funcId"]}}/ON">Turn ON</a>
           {% endif %}
         </td>
         <td>&nbsp;</td><td>&nbsp;</td>

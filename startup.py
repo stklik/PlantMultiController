@@ -1,18 +1,17 @@
-import sys
 from webserver.server import app
-from devices.datacollector import DataCollector
-from devices.datalogger import DataLogger
+# from devices.datacollector import DataCollector
+# from devices.datalogger import DataLogger
 
 import logging
-collectorLog = logging.getLogger(name="devices.datacollector") # specific logging level
+collectorLog = logging.getLogger(name="devices.datacollector")  # specific logging level
 collectorLog.setLevel(logging.INFO)
 
 # run the thread that reads all data
 # datacollector = DataCollector()
 # datacollector.start()
 
-datalogger = DataLogger()
-datalogger.start()
+# datalogger = DataLogger()
+# datalogger.start()
 
 
 # start server
